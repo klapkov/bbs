@@ -21,7 +21,6 @@ message TaskDefinition {
   Action action = 3;
   int32 disk_mb = 4 [(gogoproto.jsontag) =  "disk_mb"];
   int32 memory_mb = 5 [(gogoproto.jsontag) =  "memory_mb"];
-  uint32 cpu_weight = 6 [(gogoproto.jsontag) =  "cpu_weight"];
   bool privileged = 7 [(gogoproto.jsontag) =  "privileged"];
   string log_source = 8 [(gogoproto.jsontag) =  "log_source"];
   string log_guid = 9 [(gogoproto.jsontag) =  "log_guid"];

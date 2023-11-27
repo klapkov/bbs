@@ -62,7 +62,6 @@ func NewDesiredLRP(schedInfo DesiredLRPSchedulingInfo, runInfo DesiredLRPRunInfo
 		Monitor:                       runInfo.Monitor,
 		StartTimeoutMs:                runInfo.StartTimeoutMs,
 		Privileged:                    runInfo.Privileged,
-		CpuWeight:                     runInfo.CpuWeight,
 		Ports:                         runInfo.Ports,
 		EgressRules:                   egressRules,
 		LogSource:                     runInfo.LogSource,
@@ -101,7 +100,6 @@ func (desiredLRP *DesiredLRP) AddRunInfo(runInfo DesiredLRPRunInfo) {
 	desiredLRP.Monitor = runInfo.Monitor
 	desiredLRP.StartTimeoutMs = runInfo.StartTimeoutMs
 	desiredLRP.Privileged = runInfo.Privileged
-	desiredLRP.CpuWeight = runInfo.CpuWeight
 	desiredLRP.Ports = runInfo.Ports
 	desiredLRP.EgressRules = egressRules
 	desiredLRP.LogSource = runInfo.LogSource
@@ -281,7 +279,6 @@ func (d *DesiredLRP) DesiredLRPRunInfo(createdAt time.Time) DesiredLRPRunInfo {
 		d.Monitor,
 		d.StartTimeoutMs,
 		d.Privileged,
-		d.CpuWeight,
 		d.Ports,
 		egressRules,
 		d.LogSource,
@@ -637,7 +634,6 @@ func NewDesiredLRPRunInfo(
 	monitor *Action,
 	startTimeoutMs int64,
 	privileged bool,
-	cpuWeight uint32,
 	ports []uint32,
 	egressRules []SecurityGroupRule,
 	logSource,
@@ -664,7 +660,6 @@ func NewDesiredLRPRunInfo(
 		Monitor:                       monitor,
 		StartTimeoutMs:                startTimeoutMs,
 		Privileged:                    privileged,
-		CpuWeight:                     cpuWeight,
 		Ports:                         ports,
 		EgressRules:                   egressRules,
 		LogSource:                     logSource,
@@ -720,10 +715,6 @@ func (runInfo DesiredLRPRunInfo) Validate() error {
 			validationError = validationError.Append(ErrInvalidField{"egress_rules"})
 			validationError = validationError.Append(err)
 		}
-	}
-
-	if runInfo.GetCpuWeight() > 100 {
-		validationError = validationError.Append(ErrInvalidField{"cpu_weight"})
 	}
 
 	err := validateCachedDependencies(runInfo.CachedDependencies)

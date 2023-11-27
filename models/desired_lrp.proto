@@ -43,7 +43,6 @@ message DesiredLRPRunInfo {
 
   bool privileged = 7 [(gogoproto.jsontag) = "privileged"];
 
-  uint32 cpu_weight = 8 [(gogoproto.jsontag) = "cpu_weight"];
   repeated uint32 ports = 9 [packed = false];
   repeated SecurityGroupRule egress_rules = 10 [(gogoproto.nullable) = false];
   string log_source = 11 [(gogoproto.jsontag) = "log_source"];
@@ -116,7 +115,6 @@ message DesiredLRP {
   Action monitor = 9;
   int32 disk_mb = 10 [(gogoproto.jsontag) = "disk_mb"];
   int32 memory_mb = 11 [(gogoproto.jsontag) = "memory_mb"];
-  uint32 cpu_weight = 12 [(gogoproto.jsontag) = "cpu_weight"];
   bool privileged = 13 [(gogoproto.jsontag) = "privileged"];
   repeated uint32 ports = 14 [packed = false];
   ProtoRoutes routes = 15 [(gogoproto.nullable) = true, (gogoproto.customtype) = "Routes"];
