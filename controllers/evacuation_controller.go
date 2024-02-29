@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"time"
 
 	"code.cloudfoundry.org/auctioneer"
 	"code.cloudfoundry.org/bbs/db"
@@ -384,11 +385,15 @@ func (h *EvacuationController) EvacuateStoppedActualLRP(ctx context.Context, log
 }
 
 func (h *EvacuationController) requestAuction(ctx context.Context, logger lager.Logger, lrpKey *models.ActualLRPKey) {
+	start := time.Now()
 	schedInfo, err := h.desiredLRPDB.DesiredLRPSchedulingInfoByProcessGuid(ctx, logger, lrpKey.ProcessGuid)
 	if err != nil {
 		logger.Error("failed-fetching-desired-lrp-scheduling-info", err)
 		return
 	}
+
+	elapsed := time.Since(start)
+	logger.Info("elapsed-time-for-evacontroller", lager.Data{"time": elapsed.Seconds()})
 
 	startRequest := auctioneer.NewLRPStartRequestFromSchedulingInfo(schedInfo, int(lrpKey.Index))
 	err = h.auctioneerClient.RequestLRPAuctions(logger, trace.RequestIdFromContext(ctx), []*auctioneer.LRPStartRequest{&startRequest})
